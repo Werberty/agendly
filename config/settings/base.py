@@ -43,7 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'phonenumber_field',
+    'rest_framework',
+    'apps.core',
+    'apps.accounts',
 ]
+
+AUTH_USER_MODEL = "accounts.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -101,6 +107,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
@@ -125,6 +138,30 @@ STATIC_URL = 'static/'
 
 MAILERS = {
     'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": env("EMAIL_HOST", default="localhost"),
+            "port": env.int("EMAIL_PORT", default=1025),
+            "use_tls": env.bool("EMAIL_USE_TLS", default=False),
+            "username": env("EMAIL_HOST_USER", default=None),
+            "password": env("EMAIL_HOST_PASSWORD", default=None),
+        },
     },
+}
+
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Agendly <no-reply@agendly.local>")
+
+# Phonenumber validation
+PHONENUMBER_DEFAULT_REGION = "BR"
+PHONENUMBER_DEFAULT_FORMAT = "E164"
+PHONENUMBER_DB_FORMAT = "E164"
+
+# Caches
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": env("REDIS_URL", default="redis://localhost:6379/0"),
+        "KEY_PREFIX": "agendly",
+        "TIMEOUT": 300,
+    }
 }
