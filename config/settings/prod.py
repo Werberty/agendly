@@ -1,5 +1,4 @@
-from .base import *  # noqa: F403
-
+from .base import *
 
 SECURE_SSL_REDIRECT = True
 

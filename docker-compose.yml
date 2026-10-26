@@ -19,7 +19,7 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       retries: 10
-  
+
   api:
     build: .
     env_file: .env

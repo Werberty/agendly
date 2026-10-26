@@ -4,14 +4,14 @@ from django.db.models.functions import Lower
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
-from apps.core.models import BaseModel
 from apps.accounts.managers import UserManager
+from apps.core.models import BaseModel
 
 
 class User(BaseModel, AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
     full_name = models.CharField(max_length=150)
-    phone = PhoneNumberField(region='BR', null=True, blank=True)
+    phone = PhoneNumberField(region="BR", null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     email_verified_at = models.DateTimeField(null=True, blank=True)
