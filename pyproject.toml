@@ -71,3 +71,7 @@ ignore_missing_imports = true
 
 [tool.django-stubs]
 django_settings_module = "config.settings.test"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+addopts = "-ra --strict-markers"
